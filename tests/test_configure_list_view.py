@@ -1,7 +1,7 @@
 import unittest
 
-from torque.view.configure_list_view import ConfigureListView
 from tests.helpers.builders import ConfigBuilder
+from torque.view.configure_list_view import ConfigureListView
 
 
 class TestConfigureListView(unittest.TestCase):

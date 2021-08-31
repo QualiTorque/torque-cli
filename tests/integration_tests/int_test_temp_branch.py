@@ -8,8 +8,6 @@ from unittest.mock import Mock, patch
 
 from git import Repo
 
-from torque import branch_utils, shell
-from torque.constants import UNCOMMITTED_BRANCH_NAME
 from tests.helpers.repo_utils import (
     achieve_dirty_and_untracked_repo,
     add_untracked,
@@ -17,6 +15,8 @@ from tests.helpers.repo_utils import (
     make_repo_dirty,
     readonly_handler,
 )
+from torque import branch_utils, shell
+from torque.constants import UNCOMMITTED_BRANCH_NAME
 
 logging.getLogger("git").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)

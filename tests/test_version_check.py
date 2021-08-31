@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from torque.services.version import VersionCheckService
 from tests.helpers.builders import PyPiProjectInfoBuilder, ReleaseInfoBuilder
 from tests.helpers.utils import AnyStringWith
+from torque.services.version import VersionCheckService
 
 
 class VersionCheckServiceTests(unittest.TestCase):
