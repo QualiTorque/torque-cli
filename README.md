@@ -59,8 +59,8 @@ To see all profiles run ```torque configure list``` and the command will output 
 ```bash
 Profile Name    Torque Account    Space Name           Token
 --------------  ----------------  -------------------  -------------
-default         colony-demo       promotions-manager   *********jhtU
-custom-profile  my-colony         my-space             *********igEw
+default         torque-demo       promotions-manager   *********jhtU
+custom-profile  my-torque         my-space             *********igEw
 ```
 
 If a profile is no longer needed it can be easily removed by running ```torque configure remove [profile-name]```
