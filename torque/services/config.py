@@ -74,7 +74,7 @@ class TorqueConfigProvider(object):
 
     def _save_config_to_file(self):
         self.config_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.config_path, 'w+') as cfgfile:
+        with open(self.config_path, "w+") as cfgfile:
             self.config_obj.write(cfgfile)
 
     def _validate_profile_exists_in_config(self, config, profile):
