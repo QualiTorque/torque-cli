@@ -33,10 +33,7 @@ class BlueprintsCommand(BaseCommand):
     RESOURCE_MANAGER = BlueprintsManager
 
     def get_actions_table(self) -> dict:
-        return {
-            "list": self.do_list,
-            "validate": self.do_validate
-        }
+        return {"list": self.do_list, "validate": self.do_validate}
 
     def do_list(self) -> bool:
         try:
@@ -48,13 +45,7 @@ class BlueprintsCommand(BaseCommand):
         result_table = []
         for bp in blueprint_list:
 
-            result_table.append(
-                {
-                    "Name": bp.name,
-                    "Description": bp.description,
-                    "Enabled": bp.enabled
-                }
-            )
+            result_table.append({"Name": bp.name, "Description": bp.description, "Enabled": bp.enabled})
 
         self.message(tabulate.tabulate(result_table, headers="keys"))
         return False
