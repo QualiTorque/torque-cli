@@ -12,7 +12,7 @@ class Blueprint(Resource):
     @classmethod
     def json_deserialize(cls, manager: ResourceManager, json_obj: dict):
         try:
-            bp = Blueprint(manager, json_obj["blueprint_name"], json_obj["url"], json_obj["enabled"])
+            bp = Blueprint(manager, json_obj["blueprint_name"], json_obj["url"], json_obj.get("enabled", None))
         except KeyError as e:
             raise NotImplementedError(f"unable to create object. Missing keys in Json. Details: {e}")
 
