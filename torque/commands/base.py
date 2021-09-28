@@ -53,7 +53,7 @@ class BaseCommand(object):
     def styled_text(self, style, message: str = "", newline=True):
         self.output_formatter.styled_text(style, message, newline)
 
-    def message(self, style, message: str = "", newline=True):
+    def message(self, message: str = "", newline=True):
         self.output_formatter.yield_output(True, message)
 
     def error(self, message: str = "") -> bool:

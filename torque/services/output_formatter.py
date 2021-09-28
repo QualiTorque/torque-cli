@@ -34,7 +34,7 @@ class OutputFormatter:
             sys.stderr.write("\n")
 
     def format_output(self, output: Any) -> str:
-        if output is str:
+        if isinstance(output, str):
             return output
         elif isinstance(output, list):
             return self.format_list(output)
