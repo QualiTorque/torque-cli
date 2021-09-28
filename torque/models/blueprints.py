@@ -1,4 +1,3 @@
-import json
 from typing import List
 
 from torque.base import Resource, ResourceManager
