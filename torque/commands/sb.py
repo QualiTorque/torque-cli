@@ -1,5 +1,3 @@
-import tabulate
-
 from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
@@ -76,22 +74,7 @@ class SandboxesCommand(BaseCommand):
             logger.exception(e, exc_info=False)
             return self.die()
 
-        result_table = []
-        for sb in sandbox_list:
-
-            if sb.sandbox_status == "Ended" and not show_ended:
-                continue
-
-            result_table.append(
-                {
-                    "Sandbox ID": sb.sandbox_id,
-                    "Sandbox Name": sb.name,
-                    "Blueprint Name": sb.blueprint_name,
-                    "Status": sb.sandbox_status,
-                }
-            )
-
-        self.message(tabulate.tabulate(result_table, headers="keys"))
+        return True, sandbox_list
 
     def do_status(self):
         try:
@@ -150,16 +133,16 @@ class SandboxesCommand(BaseCommand):
                     artifacts,
                     inputs,
                 )
-                BaseCommand.action_announcement("Starting sandbox")
-                BaseCommand.important_value("Id: ", sandbox_id)
-                BaseCommand.url(prefix_message="URL: ", message=self.manager.get_sandbox_ui_link(sandbox_id))
+                self.action_announcement("Starting sandbox")
+                self.important_value("Id: ", sandbox_id)
+                self.url(prefix_message="URL: ", message=self.manager.get_sandbox_ui_link(sandbox_id))
 
             except Exception as e:
                 logger.exception(e, exc_info=False)
                 return self.die()
 
             wait_timeout_reached = Waiter.wait_for_sandbox_to_launch(
-                self.manager, sandbox_id, timeout, context_branch, wait
+                self, self.manager, sandbox_id, timeout, context_branch, wait
             )
 
             if wait_timeout_reached:

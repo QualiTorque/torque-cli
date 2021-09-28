@@ -1,4 +1,7 @@
-from .base import Resource, ResourceManager
+import json
+from typing import List
+
+from torque.base import Resource, ResourceManager
 
 
 class Blueprint(Resource):
@@ -21,6 +24,13 @@ class Blueprint(Resource):
         bp.description = json_obj.get("description", "")
         return bp
 
+    def json_serialize(self) -> dict:
+        return {
+            'name': self.name,
+            'url': self.url,
+            'enabled': self.enabled,
+        }
+
 
 class BlueprintsManager(ResourceManager):
     resource_obj = Blueprint
@@ -31,7 +41,7 @@ class BlueprintsManager(ResourceManager):
 
         return Blueprint.json_deserialize(self, bp_json)
 
-    def list(self):
+    def list(self) -> List[Blueprint]:
         url = "blueprints"
         result_json = self._list(path=url)
         return [self.resource_obj.json_deserialize(self, obj) for obj in result_json]

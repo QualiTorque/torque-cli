@@ -40,8 +40,8 @@ class TestBaseCommand(unittest.TestCase):
 class TestBlueprintCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        torque (bp | blueprint) list
-        torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>]
+        torque (bp | blueprint) list [--output=json]
+        torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>] [--output=json]
         torque (bp | blueprint) [--help]"""
 
         with self.assertRaises(DocoptExit) as ctx:
@@ -181,7 +181,7 @@ class TestConfigureCommand(unittest.TestCase):
         list_view.return_value.render.side_effect = Exception("some error")
 
         # act
-        result = command.do_list()
+        result, _ = command.do_list()
 
         # assert
         self.assertFalse(result)
@@ -209,7 +209,7 @@ class TestConfigureCommand(unittest.TestCase):
         config_provider.return_value.remove_profile.side_effect = ValueError()
 
         # act
-        result = command.do_remove()
+        result, _ = command.do_remove()
 
         # assert
         self.assertFalse(result)

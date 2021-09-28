@@ -28,6 +28,13 @@ class Sandbox(Resource):
         # sb.__dict__ = json_obj.copy()
         return sb
 
+    def json_serialize(self) -> dict:
+        return {
+            'id': self.sandbox_id,
+            'name': self.name,
+            'blueprint_name': self.blueprint_name,
+        }
+
 
 class SandboxesManager(ResourceManager):
     resource_obj = Sandbox

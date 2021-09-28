@@ -1,4 +1,5 @@
 import logging
+import sys
 import traceback
 from typing import Dict, List
 
@@ -70,4 +71,4 @@ New version available: {latest_version}
 Run 'pip install --upgrade torque-cli' to get the latest version
 ================================================================
 """
-        BaseCommand.message(message)
+        BaseCommand([]).message(message)
