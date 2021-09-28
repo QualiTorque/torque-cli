@@ -1,13 +1,10 @@
 import logging
-from collections import OrderedDict
 from typing import Any
 
-import tabulate
-
-from torque.models.blueprints import BlueprintsManager
 from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo
 from torque.commands.base import BaseCommand
+from torque.models.blueprints import BlueprintsManager
 from torque.parsers.command_input_validators import CommandInputValidator
 
 logger = logging.getLogger(__name__)

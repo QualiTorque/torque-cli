@@ -26,9 +26,9 @@ class Blueprint(Resource):
 
     def json_serialize(self) -> dict:
         return {
-            'name': self.name,
-            'url': self.url,
-            'enabled': self.enabled,
+            "name": self.name,
+            "url": self.url,
+            "enabled": self.enabled,
         }
 
 

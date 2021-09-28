@@ -3,7 +3,6 @@ import os
 import random
 import string
 
-from torque.commands.base import BaseCommand
 from torque.constants import DONE_STATUS, UNCOMMITTED_BRANCH_NAME
 from torque.exceptions import BadBlueprintRepo
 from torque.sandboxes import Sandbox
@@ -55,9 +54,7 @@ def create_temp_branch_and_stash_if_needed(repo: BlueprintRepo, working_branch: 
     if working_branch and not repo.is_current_state_synced_with_remote():
         try:
             temp_working_branch = switch_to_temp_branch(repo, working_branch)
-            logger.info(
-                "Using your local blueprint changes (including uncommitted changes and/or untracked files)"
-            )
+            logger.info("Using your local blueprint changes (including uncommitted changes and/or untracked files)")
             logger.debug(
                 f"Using temp branch: {temp_working_branch} "
                 f"(This shall include any uncommitted changes and/or untracked files)"

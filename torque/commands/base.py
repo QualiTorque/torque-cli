@@ -1,4 +1,3 @@
-import sys
 from typing import Any
 
 from colorama import Fore, Style

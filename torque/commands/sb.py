@@ -74,6 +74,9 @@ class SandboxesCommand(BaseCommand):
             logger.exception(e, exc_info=False)
             return self.die()
 
+        if not show_ended:
+            sandbox_list = sandbox_list.filter(lambda sb: sb.sandbox_status != "Ended")
+
         return True, sandbox_list
 
     def do_status(self):

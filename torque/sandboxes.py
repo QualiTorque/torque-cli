@@ -30,9 +30,9 @@ class Sandbox(Resource):
 
     def json_serialize(self) -> dict:
         return {
-            'id': self.sandbox_id,
-            'name': self.name,
-            'blueprint_name': self.blueprint_name,
+            "id": self.sandbox_id,
+            "name": self.name,
+            "blueprint_name": self.blueprint_name,
         }
 
 

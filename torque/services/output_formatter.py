@@ -62,7 +62,7 @@ class OutputFormatter:
     def format_table(self, output: list) -> str:
         result_table = []
         for line in output:
-            result_table.append(line.json_serialize() if callable(getattr(line, 'json_serialize', None)) else line)
+            result_table.append(line.json_serialize() if callable(getattr(line, "json_serialize", None)) else line)
             # TODO: json_serialize must be replaced
 
         return tabulate.tabulate(result_table, headers="keys")
