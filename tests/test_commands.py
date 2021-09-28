@@ -40,7 +40,7 @@ class TestBaseCommand(unittest.TestCase):
 class TestBlueprintCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
-        torque (bp | blueprint) list [--output=json]
+        torque (bp | blueprint) list [--output=json [--detail]]
         torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>] [--output=json]
         torque (bp | blueprint) [--help]"""
 

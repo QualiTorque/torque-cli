@@ -75,7 +75,7 @@ class SandboxesCommand(BaseCommand):
             return self.die()
 
         if not show_ended:
-            sandbox_list = sandbox_list.filter(lambda sb: sb.sandbox_status != "Ended")
+            sandbox_list = list(filter(lambda sb: sb.sandbox_status != "Ended", sandbox_list))
 
         return True, sandbox_list
 

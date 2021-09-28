@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class BlueprintsCommand(BaseCommand):
     """
     usage:
-        torque (bp | blueprint) list [--output=json]
+        torque (bp | blueprint) list [--output=json [--detail]]
         torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>] [--output=json]
         torque (bp | blueprint) [--help]
 
@@ -27,6 +27,8 @@ class BlueprintsCommand(BaseCommand):
 
        -o --output=json         Yield output in JSON format
 
+       -d --detail              Obtain full blueprint data in JSON format
+
        -h --help                Show this message
     """
 
@@ -36,8 +38,12 @@ class BlueprintsCommand(BaseCommand):
         return {"list": self.do_list, "validate": self.do_validate}
 
     def do_list(self) -> (bool, Any):
+        detail = self.input_parser.blueprint_list.detail
         try:
-            blueprint_list = self.manager.list()
+            if detail:
+                blueprint_list = self.manager.list_json()
+            else:
+                blueprint_list = self.manager.list()
         except Exception as e:
             logger.exception(e, exc_info=False)
             return self.die()

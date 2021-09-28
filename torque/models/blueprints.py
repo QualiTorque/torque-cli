@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Any
 
 from torque.base import Resource, ResourceManager
 
@@ -31,6 +31,33 @@ class Blueprint(Resource):
         }
 
 
+class BlueprintDetails(Blueprint):
+    def __init__(self, manager: ResourceManager, name: str, url: str, enabled: bool):
+        super(Blueprint, self).__init__(manager)
+
+        self.name = name
+        self.url = url
+        self.enabled = enabled
+
+    @classmethod
+    def json_deserialize(cls, manager: ResourceManager, json_obj: dict):
+        try:
+            bp = Blueprint(manager, json_obj["blueprint_name"], json_obj["url"], json_obj.get("enabled", None))
+        except KeyError as e:
+            raise NotImplementedError(f"unable to create object. Missing keys in Json. Details: {e}")
+
+        # TODO(ddovbii): set all needed attributes
+        bp.errors = json_obj.get("errors", [])
+        bp.description = json_obj.get("description", "")
+        return bp
+
+    def json_serialize(self) -> dict:
+        return {
+            "name": self.name,
+            "url": self.url,
+            "enabled": self.enabled,
+        }
+
 class BlueprintsManager(ResourceManager):
     resource_obj = Blueprint
 
@@ -44,6 +71,11 @@ class BlueprintsManager(ResourceManager):
         url = "blueprints"
         result_json = self._list(path=url)
         return [self.resource_obj.json_deserialize(self, obj) for obj in result_json]
+
+    def list_json(self) -> Any:
+        url = "blueprints"
+        result_json = self._list(path=url)
+        return result_json
 
     def validate(self, blueprint: str, env_type: str = "sandbox", branch: str = None, commit: str = None) -> Blueprint:
         url = "validations/blueprints"
