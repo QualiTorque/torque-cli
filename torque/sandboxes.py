@@ -1,3 +1,4 @@
+from typing import List
 from urllib.parse import urlparse
 
 from .base import Resource, ResourceManager
@@ -60,7 +61,7 @@ class SandboxesManager(ResourceManager):
 
         return self.resource_obj.json_deserialize(self, sb_json)
 
-    def list(self, count: int = 25, filter_opt: str = "my"):
+    def list(self, count: int = 25, filter_opt: str = "my") -> List[Sandbox]:
 
         filter_params = {"count": count, "filter": filter_opt}
         list_json = self._list(path=self.SANDBOXES_PATH, filter_params=filter_params)

@@ -2,7 +2,7 @@ from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
 from torque.parsers.command_input_validators import CommandInputValidator
-from torque.sandboxes import SandboxesManager
+from torque.sandboxes import SandboxesManager, Sandbox
 from torque.services.sb_naming import generate_sandbox_name
 from torque.services.waiter import Waiter
 
@@ -10,10 +10,10 @@ from torque.services.waiter import Waiter
 class SandboxesCommand(BaseCommand):
     """
     usage:
-        torque (sb | sandbox) start <blueprint_name> [options]
+        torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
         torque (sb | sandbox) status <sandbox_id>
         torque (sb | sandbox) end <sandbox_id>
-        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>]
+        torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>] [--output=json]
         torque (sb | sandbox) [--help]
 
     options:
@@ -54,6 +54,8 @@ class SandboxesCommand(BaseCommand):
        -w, --wait_active                Block shell prompt and wait for the sandbox to be Active (or deployment ended
                                         with an error) while the timeout is not reached. Default timeout is 30 minutes.
                                         The default timeout can be changed using the "timeout" flag.
+
+       -o --output=json                 Yield output in JSON format
 
 
     """
@@ -136,20 +138,23 @@ class SandboxesCommand(BaseCommand):
                     artifacts,
                     inputs,
                 )
-                self.action_announcement("Starting sandbox")
-                self.important_value("Id: ", sandbox_id)
-                self.url(prefix_message="URL: ", message=self.manager.get_sandbox_ui_link(sandbox_id))
+                if not self.global_input_parser.output_json:
+                    self.action_announcement("Starting sandbox")
+                    self.important_value("Id: ", sandbox_id)
+                    self.url(prefix_message="URL: ", message=self.manager.get_sandbox_ui_link(sandbox_id))
 
             except Exception as e:
                 logger.exception(e, exc_info=False)
                 return self.die()
 
             wait_timeout_reached = Waiter.wait_for_sandbox_to_launch(
-                self, self.manager, sandbox_id, timeout, context_branch, wait
+                self, self.manager, sandbox_id, timeout, context_branch, wait,
             )
 
             if wait_timeout_reached:
                 return self.die()
+            elif self.global_input_parser.output_json:
+                return True, Sandbox(None, sandbox_id)
             else:
                 return self.success(sandbox_id)
 

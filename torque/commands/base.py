@@ -29,7 +29,8 @@ class BaseCommand(object):
 
         self.args = docopt(self.__doc__, argv=command_args)
         self.input_parser = CommandInputParser(self.args)
-        self.output_formatter = self.OUTPUT_FORMATTER(GlobalInputParser(self.args))
+        self.global_input_parser = GlobalInputParser(self.args)
+        self.output_formatter = self.OUTPUT_FORMATTER(self.global_input_parser)
 
     def execute(self) -> bool:
         """Finds a subcommand passed to with command in
