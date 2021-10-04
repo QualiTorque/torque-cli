@@ -11,7 +11,7 @@ class SandboxesCommand(BaseCommand):
     """
     usage:
         torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
-        torque (sb | sandbox) status <sandbox_id>
+        torque (sb | sandbox) status <sandbox_id> [--output=json]
         torque (sb | sandbox) end <sandbox_id>
         torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>] [--output=json]
         torque (sb | sandbox) [--help]
@@ -89,7 +89,7 @@ class SandboxesCommand(BaseCommand):
             return self.die()
 
         status = getattr(sandbox, "sandbox_status")
-        return self.success(status)
+        return True, status
 
     def do_end(self):
         try:
