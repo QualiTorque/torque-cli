@@ -154,7 +154,7 @@ class SandboxesCommand(BaseCommand):
             if wait_timeout_reached:
                 return self.die()
             elif self.global_input_parser.output_json:
-                return True, Sandbox(None, sandbox_id)
+                return True, sandbox_id
             else:
                 return self.success(sandbox_id)
 

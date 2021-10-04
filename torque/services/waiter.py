@@ -13,12 +13,12 @@ from torque.sandboxes import SandboxesManager
 class Waiter(object):
     @staticmethod
     def wait_for_sandbox_to_launch(
-        command: BaseCommand,
-        sb_manager: SandboxesManager,
-        sandbox_id: str,
-        timeout: int,
-        context_branch: ContextBranch,
-        wait: bool,
+            command: BaseCommand,
+            sb_manager: SandboxesManager,
+            sandbox_id: str,
+            timeout: int,
+            context_branch: ContextBranch,
+            wait: bool,
     ) -> bool:
 
         if not wait and not context_branch.temp_branch_exists:
@@ -36,7 +36,9 @@ class Waiter(object):
 
             sandbox_start_wait_output(command, sandbox_id, context_branch.temp_branch_exists)
 
-            with yaspin(text="Starting...", color="yellow") as spinner:
+            spinner_class = NullSpinner if command.global_input_parser.output_json else yaspin
+
+            with spinner_class(text="Starting...", color="yellow") as spinner:
                 while (datetime.datetime.now() - start_time).seconds < timeout * 60:
                     if status in FINAL_SB_STATUSES:
                         spinner.green.ok("✔")
@@ -68,3 +70,21 @@ def sandbox_start_wait_output(command: BaseCommand, sandbox_id, temp_branch_exis
     else:
         logger.debug(f"Waiting for the Sandbox {sandbox_id} to finish launching...")
         command.info("Waiting for the Sandbox to start. This may take some time.")
+
+
+class NullSpinner:
+    text: str
+
+    def __init__(self, text, color):
+        self.green = NullSpinnerOut()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        pass
+
+
+class NullSpinnerOut:
+    def ok(self, text) -> None:
+        pass

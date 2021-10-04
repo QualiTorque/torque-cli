@@ -35,11 +35,17 @@ class OutputFormatter:
 
     def format_output(self, output: Any) -> str:
         if isinstance(output, str):
-            return output
+            return self.format_str(output)
         elif isinstance(output, list):
             return self.format_list(output)
         else:
             return self.format_object(output)
+
+    def format_str(self, output):
+        if self.global_input_parser.output_json:
+            return self.format_json_str(output)
+        else:
+            return output
 
     def format_list(self, output: list):
         if self.global_input_parser.output_json:
@@ -52,6 +58,9 @@ class OutputFormatter:
             return self.format_json_object(output)
         else:
             return self.format_object_default(output)
+
+    def format_json_str(self, output):
+        return json.dumps(output, indent=True)
 
     def format_json_list(self, output: list) -> str:
         return json.dumps(output, default=lambda x: x.json_serialize(), indent=True)
@@ -69,3 +78,4 @@ class OutputFormatter:
 
     def format_object_default(self, output: Any) -> str:
         pass
+
