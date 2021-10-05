@@ -13,12 +13,12 @@ from torque.sandboxes import SandboxesManager
 class Waiter(object):
     @staticmethod
     def wait_for_sandbox_to_launch(
-            command: BaseCommand,
-            sb_manager: SandboxesManager,
-            sandbox_id: str,
-            timeout: int,
-            context_branch: ContextBranch,
-            wait: bool,
+        command: BaseCommand,
+        sb_manager: SandboxesManager,
+        sandbox_id: str,
+        timeout: int,
+        context_branch: ContextBranch,
+        wait: bool,
     ) -> bool:
 
         if not wait and not context_branch.temp_branch_exists:

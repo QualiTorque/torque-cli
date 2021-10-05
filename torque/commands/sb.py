@@ -2,7 +2,7 @@ from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
 from torque.parsers.command_input_validators import CommandInputValidator
-from torque.sandboxes import SandboxesManager, Sandbox
+from torque.sandboxes import SandboxesManager
 from torque.services.sb_naming import generate_sandbox_name
 from torque.services.waiter import Waiter
 
@@ -148,7 +148,12 @@ class SandboxesCommand(BaseCommand):
                 return self.die()
 
             wait_timeout_reached = Waiter.wait_for_sandbox_to_launch(
-                self, self.manager, sandbox_id, timeout, context_branch, wait,
+                self,
+                self.manager,
+                sandbox_id,
+                timeout,
+                context_branch,
+                wait,
             )
 
             if wait_timeout_reached:

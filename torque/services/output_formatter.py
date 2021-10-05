@@ -78,4 +78,3 @@ class OutputFormatter:
 
     def format_object_default(self, output: Any) -> str:
         pass
-
