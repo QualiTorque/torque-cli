@@ -70,4 +70,4 @@ class OutputFormatter:
         return tabulate.tabulate(result_table, headers="keys")
 
     def format_object_default(self, output: Any) -> str:
-        raise NotImplementedError() #TODO
+        raise NotImplementedError()  # TODO
