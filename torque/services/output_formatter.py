@@ -10,15 +10,23 @@ from torque.parsers.global_input_parser import GlobalInputParser
 
 class OutputFormatter:
     def __init__(self, global_input_parser: GlobalInputParser):
-        self.global_input_parser = global_input_parser
+        if global_input_parser.output_json:
+            self.format_str = self.format_json_str
+            self.format_list = self.format_json_list
+            self.format_object = self.format_json_object
+            self.styled_text = lambda _: None
+        else:
+            self.format_str = self.format_default_str
+            self.format_list = self.format_table
+            self.format_object = self.format_object_default
+            self.styled_text = self.styled_text_default
 
-    def styled_text(self, style, message, newline):
-        if not self.global_input_parser.output_json:
-            if message:
-                sys.stdout.write(style + message)
-                sys.stdout.write(Style.RESET_ALL)
-            if newline:
-                sys.stdout.write("\n")
+    def styled_text_default(self, style, message, newline):
+        if message:
+            sys.stdout.write(style + message)
+            sys.stdout.write(Style.RESET_ALL)
+        if newline:
+            sys.stdout.write("\n")
 
     def yield_output(self, success: bool, output: Any):
         if not output:
@@ -41,23 +49,8 @@ class OutputFormatter:
         else:
             return self.format_object(output)
 
-    def format_str(self, output):
-        if self.global_input_parser.output_json:
-            return self.format_json_str(output)
-        else:
-            return output
-
-    def format_list(self, output: list):
-        if self.global_input_parser.output_json:
-            return self.format_json_list(output)
-        else:
-            return self.format_table(output)
-
-    def format_object(self, output):
-        if self.global_input_parser.output_json:
-            return self.format_json_object(output)
-        else:
-            return self.format_object_default(output)
+    def format_default_str(self, output):
+        return output
 
     def format_json_str(self, output):
         return json.dumps(output, indent=True)
@@ -77,4 +70,4 @@ class OutputFormatter:
         return tabulate.tabulate(result_table, headers="keys")
 
     def format_object_default(self, output: Any) -> str:
-        pass
+        raise NotImplementedError() #TODO
