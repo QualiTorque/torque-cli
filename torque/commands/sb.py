@@ -68,7 +68,8 @@ class SandboxesCommand(BaseCommand):
             "status": self.do_status,
             "start": self.do_start,
             "end": self.do_end,
-            "list": self.do_list, "get": self.do_get}
+            "list": self.do_list,
+            "get": self.do_get}
 
     def do_list(self):
         list_filter = self.input_parser.sandbox_list.filter

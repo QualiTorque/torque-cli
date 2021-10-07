@@ -76,5 +76,3 @@ class OutputFormatter:
             result_table.append([k, v])
 
         return tabulate.tabulate(result_table)
-
-
