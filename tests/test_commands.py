@@ -70,8 +70,8 @@ class TestSandboxCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
         torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
-        torque (sb | sandbox) get <sandbox_id> [--output=json [--detail]]
         torque (sb | sandbox) status <sandbox_id> [--output=json]
+        torque (sb | sandbox) get <sandbox_id> [--output=json [--detail]]
         torque (sb | sandbox) end <sandbox_id>
         torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>] [--output=json]
         torque (sb | sandbox) [--help]"""
