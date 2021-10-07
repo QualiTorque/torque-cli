@@ -45,7 +45,7 @@ class BlueprintsManager(ResourceManager):
         result_json = self._list(path=url)
         return [self.resource_obj.json_deserialize(self, obj) for obj in result_json]
 
-    def list_json(self) -> Any:
+    def list_detailed(self) -> Any:
         url = "blueprints"
         result_json = self._list(path=url)
         return result_json

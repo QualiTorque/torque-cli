@@ -12,6 +12,7 @@ class SandboxesCommand(BaseCommand):
     usage:
         torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
         torque (sb | sandbox) status <sandbox_id> [--output=json]
+        torque (sb | sandbox) get <sandbox_id> [--output=json [--detail]]
         torque (sb | sandbox) end <sandbox_id>
         torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>] [--output=json]
         torque (sb | sandbox) [--help]
@@ -63,7 +64,11 @@ class SandboxesCommand(BaseCommand):
     RESOURCE_MANAGER = SandboxesManager
 
     def get_actions_table(self) -> dict:
-        return {"status": self.do_status, "start": self.do_start, "end": self.do_end, "list": self.do_list}
+        return {
+            "status": self.do_status,
+            "start": self.do_start,
+            "end": self.do_end,
+            "list": self.do_list, "get": self.do_get}
 
     def do_list(self):
         list_filter = self.input_parser.sandbox_list.filter
@@ -90,6 +95,19 @@ class SandboxesCommand(BaseCommand):
 
         status = getattr(sandbox, "sandbox_status")
         return True, status
+
+    def do_get(self):
+        try:
+            detail = self.input_parser.blueprint_list.detail
+            if detail:
+                sandbox = self.manager.get_detailed(self.input_parser.sandbox_status.sandbox_id)
+            else:
+                sandbox = self.manager.get(self.input_parser.sandbox_status.sandbox_id)
+        except Exception as e:
+            logger.exception(e, exc_info=False)
+            return self.die()
+
+        return True, sandbox
 
     def do_end(self):
         try:

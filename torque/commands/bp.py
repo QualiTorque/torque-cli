@@ -41,7 +41,7 @@ class BlueprintsCommand(BaseCommand):
         detail = self.input_parser.blueprint_list.detail
         try:
             if detail:
-                blueprint_list = self.manager.list_json()
+                blueprint_list = self.manager.list_detailed()
             else:
                 blueprint_list = self.manager.list()
         except Exception as e:

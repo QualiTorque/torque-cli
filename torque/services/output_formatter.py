@@ -70,4 +70,12 @@ class OutputFormatter:
         return tabulate.tabulate(result_table, headers="keys")
 
     def format_object_default(self, output: Any) -> str:
-        raise NotImplementedError()  # TODO
+        result_table = []
+        # TODO: json_serialize must be replaced
+        tmp = output.json_serialize()
+        for (k, v) in output.json_serialize().items():
+            result_table.append([k, v])
+
+        return tabulate.tabulate(result_table)
+
+

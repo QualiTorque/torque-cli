@@ -61,6 +61,12 @@ class SandboxesManager(ResourceManager):
 
         return self.resource_obj.json_deserialize(self, sb_json)
 
+    def get_detailed(self, sandbox_id: str) -> dict:
+        url = f"{self.SANDBOXES_PATH}/{sandbox_id}"
+        sb_json = self._get(url)
+
+        return sb_json
+
     def list(self, count: int = 25, filter_opt: str = "my") -> List[Sandbox]:
 
         filter_params = {"count": count, "filter": filter_opt}
