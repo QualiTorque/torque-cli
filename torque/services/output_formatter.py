@@ -72,7 +72,6 @@ class OutputFormatter:
     def format_object_default(self, output: Any) -> str:
         result_table = []
         # TODO: json_serialize must be replaced
-        tmp = output.json_serialize()
         for (k, v) in output.json_serialize().items():
             result_table.append([k, v])
 
