@@ -70,6 +70,7 @@ class TestSandboxCommand(unittest.TestCase):
     def test_base_help_usage_line(self):
         expected_usage = """usage:
         torque (sb | sandbox) start <blueprint_name> [options] [--output=json]
+        torque (sb | sandbox) get <sandbox_id> [--output=json [--detail]]
         torque (sb | sandbox) status <sandbox_id> [--output=json]
         torque (sb | sandbox) end <sandbox_id>
         torque (sb | sandbox) list [--filter={all|my|auto}] [--show-ended] [--count=<N>] [--output=json]
@@ -83,7 +84,7 @@ class TestSandboxCommand(unittest.TestCase):
     def test_actions_table(self):
         args = "sb start test".split()
         command = SandboxesCommand(command_args=args)
-        expected_actions = ["start", "end", "status", "list"]
+        expected_actions = ["start", "end", "status", "list", "get"]
         for action in command.get_actions_table():
             self.assertIn(action, expected_actions)
 
