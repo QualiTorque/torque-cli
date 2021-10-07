@@ -69,7 +69,7 @@ class SandboxesCommand(BaseCommand):
             "start": self.do_start,
             "end": self.do_end,
             "list": self.do_list,
-            "get": self.do_get
+            "get": self.do_get,
         }
 
     def do_list(self):
