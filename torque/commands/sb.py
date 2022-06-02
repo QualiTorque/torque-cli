@@ -140,11 +140,16 @@ class SandboxesCommand(BaseCommand):
             try:
                 repo = get_and_check_folder_based_repo(blueprint_name)
             except Exception:
-                logger.debug(
-                    "Since the branch could not be identified, the default one connected to Torque will be used"
+                self.info(
+                    "Since the blueprint repo was not found in the local working directory, trying to find blueprint "
+                    "remotely and start it from the default branch."
                 )
                 repo = None
-            self._update_missing_artifacts_and_inputs_with_default_values(artifacts, blueprint_name, inputs, repo)
+            try:
+                self._update_missing_artifacts_and_inputs_with_default_values(artifacts, blueprint_name, inputs, repo)
+            except Exception as e:
+                logger.exception(e, exc_info=False)
+                return self.die(f"Unable to start sandbox from blueprint '{blueprint_name}'")
         else:
             repo = None
 
@@ -215,7 +220,10 @@ class SandboxesCommand(BaseCommand):
                 logger.debug(f"Unable to obtain default values. Details: {e}")
         else:
             bp_manager = BlueprintsManager(client=self.client)
-            blueprint_object = bp_manager.get_detailed(blueprint_name)
+            try:
+                blueprint_object = bp_manager.get_detailed(blueprint_name)
+            except Exception as e:
+                raise Exception(f"Unable to get details of blueprint '{blueprint_name}'. Details: {e}")
             bp_props = blueprint_object.get("details", None) or blueprint_object
 
             for k, v in bp_props.get("artifacts", {}).items():

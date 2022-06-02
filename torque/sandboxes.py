@@ -15,12 +15,20 @@ class Sandbox(Resource):
     @classmethod
     def json_deserialize(cls, manager: ResourceManager, json_obj: dict):
         try:
-            sb = Sandbox(manager, json_obj["id"], json_obj["name"], json_obj["blueprint_name"])
+            sandbox_id = json_obj["details"]["id"]
+            sb_details = json_obj["details"]["definition"]
+            sb = Sandbox(manager,
+                         sandbox_id,
+                         sb_details["metadata"]["name"],
+                         sb_details["metadata"]["blueprint_name"],
+                         )
+            sb.sandbox_status = json_obj["details"]["computed_status"]
         except KeyError as e:
             raise NotImplementedError(f"unable to create object. Missing keys in Json. Details: {e}")
 
-        for attr in ["description", "errors", "sandbox_status", "launching_progress"]:
-            sb.__dict__[attr] = json_obj.get(attr, "")
+
+        # for attr in ["description", "errors", "sandbox_status", "launching_progress"]:
+        #     sb.__dict__[attr] = json_obj.get(attr, "")
         # TODO(ddovbii): set all needed attributes
         # sb.errors = json_obj.get("errors", [])
         # sb.description = json_obj.get("description", "")
@@ -42,19 +50,20 @@ class Sandbox(Resource):
 
 class SandboxesManager(ResourceManager):
     resource_obj = Sandbox
-    SANDBOXES_PATH = "sandbox"
-    SPECIFIC_SANDBOX_PATH = "sandboxes"
+    SANDBOXES_PATH = "environments"
+
+    # SPECIFIC_SANDBOX_PATH = "sandboxes"
 
     def get_sandbox_url(self, sandbox_id: str) -> str:
-        return self._get_full_url(f"{self.SPECIFIC_SANDBOX_PATH}/{sandbox_id}")
+        return self._get_full_url(f"{self.SANDBOXES_PATH}/{sandbox_id}")
 
     def get_sandbox_ui_link(self, sandbox_id: str) -> str:
         url = urlparse(self.get_sandbox_url(sandbox_id))
         space = url.path.split("/")[3]
         if self.client.account:
-            ui_url = f"https://{url.hostname}/{space}/{self.SPECIFIC_SANDBOX_PATH}/{sandbox_id}"
+            ui_url = f"https://{url.hostname}/{space}/{self.SANDBOXES_PATH}/{sandbox_id}"
         else:
-            ui_url = f"https://[YOUR_ACCOUNT].{url.hostname}/{space}/{self.SPECIFIC_SANDBOX_PATH}/{sandbox_id}"
+            ui_url = f"https://[YOUR_ACCOUNT].{url.hostname}/{space}/{self.SANDBOXES_PATH}/{sandbox_id}"
 
         return ui_url
 

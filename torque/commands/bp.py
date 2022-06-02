@@ -62,7 +62,7 @@ class BlueprintsCommand(BaseCommand):
                 bp = self.manager.get(blueprint_name)
         except Exception as e:
             logger.exception(e, exc_info=False)
-            return self.die()
+            return self.die(f"Unable to get details of blueprint '{blueprint_name}'")
 
         return True, bp
 

@@ -1,6 +1,6 @@
 UNCOMMITTED_BRANCH_NAME = "tmp-torque-"
 DEFAULT_TIMEOUT = 30
-FINAL_SB_STATUSES = ["Active", "ActiveWithError", "Ended", "EndedWithError", "Ending", "NotFound"]
+FINAL_SB_STATUSES = ["Active", "Active With Error", "Ended", "Ended With Error", "Terminating", "Terminating Failed"]
 
 DONE_STATUS = "Done"
 

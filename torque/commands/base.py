@@ -66,7 +66,8 @@ class BaseCommand(object):
         return True, None
 
     def die(self, message: str = "") -> (bool, str):
-        return False, message
+        self.error(message)
+        return False, None
 
     # Unimportant info that can be de-emphasized
     def fyi_info(self, message: str = ""):
