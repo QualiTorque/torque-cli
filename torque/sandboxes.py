@@ -93,7 +93,6 @@ class SandboxesManager(ResourceManager):
         duration: int = 120,
         branch: str = None,
         commit: str = None,
-        artifacts: dict = None,
         inputs: dict = None,
     ) -> str:
         url = "sandbox"
@@ -108,7 +107,6 @@ class SandboxesManager(ResourceManager):
             "blueprint_name": blueprint_name,
             "duration": iso_duration,
             "inputs": inputs,
-            "artifacts": artifacts,
         }
 
         if branch:

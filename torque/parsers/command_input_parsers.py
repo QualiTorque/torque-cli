@@ -159,7 +159,3 @@ class SandboxStartInputParser(InputParserBase):
     @property
     def inputs(self) -> dict:
         return parse_comma_separated_string(self._args["--inputs"])
-
-    @property
-    def artifacts(self) -> dict:
-        return parse_comma_separated_string(self._args["--artifacts"])
