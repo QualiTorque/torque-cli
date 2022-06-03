@@ -42,7 +42,6 @@ class TestBlueprintCommand(unittest.TestCase):
         expected_usage = """usage:
         torque (bp | blueprint) list [--output=json | --output=json --detail]
         torque (bp | blueprint) get <name> [--output=json | --output=json --detail]
-        torque (bp | blueprint) validate <name> [--branch <branch>] [--commit <commitId>] [--output=json]
         torque (bp | blueprint) [--help]"""
 
         with self.assertRaises(DocoptExit) as ctx:
@@ -54,7 +53,7 @@ class TestBlueprintCommand(unittest.TestCase):
         args = "bp validate test".split()
         command = BlueprintsCommand(command_args=args)
 
-        for action in ["list", "validate"]:
+        for action in ["list", "get"]:
             self.assertIn(action, command.get_actions_table())
 
     def test_do_validate_commit_only(self):
