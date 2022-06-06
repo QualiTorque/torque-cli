@@ -123,7 +123,8 @@ class TestStashLogicFunctions(unittest.TestCase):
         self.repo.is_current_branch_synced()
 
     @patch("time.sleep", return_value=None)
-    @patch("torque.services.waiter.can_temp_branch_be_deleted")
+    @patch("torque.branch.branch_utils.can_temp_branch_be_deleted")
+    # @patch("torque.services.waiter.can_temp_branch_be_deleted")
     def test_wait_for_sandbox_to_launch_final_stage(self, can_temp, time_sleep):
         # Arrange:
         self.initialize_mock_vars()
@@ -171,7 +172,8 @@ class TestStashLogicFunctions(unittest.TestCase):
 
     @patch("torque.services.waiter.DEFAULT_TIMEOUT", 0.01)
     @patch("time.sleep", return_value=None)
-    @patch("torque.services.waiter.can_temp_branch_be_deleted")
+    @patch("torque.branch.branch_utils.can_temp_branch_be_deleted")
+    # @patch("torque.services.waiter.can_temp_branch_be_deleted")
     def test_wait_before_temp_branch_delete_cannot_be_deleted(
         self,
         can_temp,
