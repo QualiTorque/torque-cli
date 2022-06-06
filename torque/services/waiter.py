@@ -4,7 +4,7 @@ import time
 from yaspin import yaspin
 
 from torque.branch.branch_context import ContextBranch
-from torque.branch.branch_utils import logger  # can_temp_branch_be_deleted
+from torque.branch.branch_utils import can_temp_branch_be_deleted, logger
 from torque.commands.base import BaseCommand
 from torque.constants import DEFAULT_TIMEOUT, FINAL_SB_STATUSES
 from torque.sandboxes import SandboxesManager
