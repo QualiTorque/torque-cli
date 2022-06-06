@@ -1,22 +1,22 @@
 import logging
 import os
 import shutil
-import sys
+# import sys
 import tempfile
 import unittest
-from unittest.mock import Mock, patch
+# from unittest.mock import Mock, patch
 
 from git import Repo
 
 from tests.helpers.repo_utils import (
-    achieve_dirty_and_untracked_repo,
-    add_untracked,
+    # achieve_dirty_and_untracked_repo,
+    # add_untracked,
     create_clean_repo,
-    make_repo_dirty,
+    # make_repo_dirty,
     readonly_handler,
 )
-from torque import shell
-from torque.branch import branch_context, branch_utils
+# from torque import shell
+# from torque.branch import branch_context, branch_utils
 from torque.constants import UNCOMMITTED_BRANCH_NAME
 
 logging.getLogger("git").setLevel(logging.WARNING)
