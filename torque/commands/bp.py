@@ -31,7 +31,7 @@ class BlueprintsCommand(BaseCommand):
         return {
             "list": self.do_list,
             # "validate": self.do_validate,
-            "get": self.do_get
+            "get": self.do_get,
         }
 
     def do_list(self) -> (bool, Any):

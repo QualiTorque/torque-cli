@@ -17,15 +17,15 @@ class Sandbox(Resource):
         try:
             sandbox_id = json_obj["details"]["id"]
             sb_details = json_obj["details"]["definition"]
-            sb = Sandbox(manager,
-                         sandbox_id,
-                         sb_details["metadata"]["name"],
-                         sb_details["metadata"]["blueprint_name"],
-                         )
+            sb = Sandbox(
+                manager,
+                sandbox_id,
+                sb_details["metadata"]["name"],
+                sb_details["metadata"]["blueprint_name"],
+            )
             sb.sandbox_status = json_obj["details"]["computed_status"]
         except KeyError as e:
             raise NotImplementedError(f"unable to create object. Missing keys in Json. Details: {e}")
-
 
         # for attr in ["description", "errors", "sandbox_status", "launching_progress"]:
         #     sb.__dict__[attr] = json_obj.get(attr, "")
