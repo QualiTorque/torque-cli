@@ -50,16 +50,16 @@ class TestBlueprintCommand(unittest.TestCase):
         self.assertEqual(expected_usage, str(ctx.exception))
 
     def test_actions_table(self):
-        args = "bp validate test".split()
+        args = "bp get test".split()
         command = BlueprintsCommand(command_args=args)
 
         for action in ["list", "get"]:
             self.assertIn(action, command.get_actions_table())
 
-    def test_do_validate_commit_only(self):
-        args = "bp validate test --commit abc123".split()
-        command = BlueprintsCommand(command_args=args)
-        self.assertRaises(DocoptExit, command.do_validate)
+    # def test_do_validate_commit_only(self):
+    #     args = "bp validate test --commit abc123".split()
+    #     command = BlueprintsCommand(command_args=args)
+    #     self.assertRaises(DocoptExit, command.do_validate)
 
     def test_do_list(self):
         args = "bp list".split()
