@@ -1,22 +1,12 @@
 import logging
 import os
 import shutil
-# import sys
 import tempfile
 import unittest
-# from unittest.mock import Mock, patch
 
 from git import Repo
 
-from tests.helpers.repo_utils import (
-    # achieve_dirty_and_untracked_repo,
-    # add_untracked,
-    create_clean_repo,
-    # make_repo_dirty,
-    readonly_handler,
-)
-# from torque import shell
-# from torque.branch import branch_context, branch_utils
+from tests.helpers.repo_utils import create_clean_repo, readonly_handler
 from torque.constants import UNCOMMITTED_BRANCH_NAME
 
 logging.getLogger("git").setLevel(logging.WARNING)
@@ -52,7 +42,17 @@ class GitMagicTests(unittest.TestCase):
     # @patch("torque.shell.BootstrapHelper.get_connection_params")
     # @patch("torque.branch.branch_utils.debug_output_about_repo_examination")
     # @patch("torque.shell.exit")
-    # def test_blueprint_validate_uncommitted_untracked(self, exit, ex, get_c, get_d, del_t, bp_validate, create_r, is_c):
+    # def test_blueprint_validate_uncommitted_untracked(
+    #         self,
+    #         exit,
+    #         ex,
+    #         get_c,
+    #         get_d,
+    #         del_t,
+    #         bp_validate,
+    #         create_r,
+    #         is_c
+    # ):
     #     # Arrange
     #     bp_validate.return_value = Mock(errors="")
     #
@@ -81,7 +81,17 @@ class GitMagicTests(unittest.TestCase):
     # @patch("torque.shell.BootstrapHelper.get_connection_params")
     # @patch("torque.branch.branch_utils.debug_output_about_repo_examination")
     # @patch("torque.shell.exit")
-    # def test_blueprint_validate_uncommitted(self, exit, examination, get_c, get_d, del_t, bp_validate, create_r, is_c):
+    # def test_blueprint_validate_uncommitted(
+    #         self,
+    #         exit,
+    #         examination,
+    #         get_c,
+    #         get_d,
+    #         del_t,
+    #         bp_validate,
+    #         create_r,
+    #         is_c
+    # ):
     #     # Arrange
     #     bp_validate.return_value = Mock(errors="")
     #
@@ -110,7 +120,17 @@ class GitMagicTests(unittest.TestCase):
     # @patch("torque.shell.BootstrapHelper.get_connection_params")
     # @patch("torque.branch.branch_utils.debug_output_about_repo_examination")
     # @patch("torque.shell.exit")
-    # def test_blueprint_validate_committed_untracked(self, exit, exam, get_c, get_d, del_t, bp_validate, create_r, is_c):
+    # def test_blueprint_validate_committed_untracked(
+    #         self,
+    #         exit,
+    #         exam,
+    #         get_c,
+    #         get_d,
+    #         del_t,
+    #         bp_validate,
+    #         create_r,
+    #         is_c
+    # ):
     #     # Arrange
     #     bp_validate.return_value = Mock(errors="")
     #
