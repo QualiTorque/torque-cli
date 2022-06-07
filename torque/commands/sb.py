@@ -30,14 +30,14 @@ class SandboxesCommand(BaseCommand):
                                         from the Blueprint definition yaml file.
 
 
-       -b, --branch <branch>            Run the Blueprint version from a remote Git branch. If not provided,
-                                        the CLI will attempt to automatically detect the current working branch.
-                                        The CLI will automatically run any local uncommitted or untracked changes in a
-                                        temporary branch created for the validation or for the development Sandbox.
-
-       -c, --commit <commitId>          Specify a specific Commit ID. This is used in order to run a Sandbox from a
-                                        specific Blueprint historic version. If this parameter is used, the
-                                        Branch parameter must also be specified.
+       # -b, --branch <branch>            Run the Blueprint version from a remote Git branch. If not provided,
+       #                                  the CLI will attempt to automatically detect the current working branch.
+       #                                  The CLI will automatically run any local uncommitted or untracked changes in a
+       #                                  temporary branch created for the validation or for the development Sandbox.
+       #
+       # -c, --commit <commitId>          Specify a specific Commit ID. This is used in order to run a Sandbox from a
+       #                                  specific Blueprint historic version. If this parameter is used, the
+       #                                  Branch parameter must also be specified.
 
        -t, --timeout <minutes>          Set how long (default timeout is 30 minutes) to block and wait before releasing
                                         control back to shell prompt. If timeout is reached before the desired status
@@ -120,8 +120,11 @@ class SandboxesCommand(BaseCommand):
         # get commands inputs
         blueprint_name = self.input_parser.sandbox_start.blueprint_name
 
-        branch = self.input_parser.sandbox_start.branch
-        commit = self.input_parser.sandbox_start.commit
+        # branch = self.input_parser.sandbox_start.branch
+        # commit = self.input_parser.sandbox_start.commit
+        branch = None
+        commit = None
+
         CommandInputValidator.validate_commit_and_branch_specified(branch, commit)
 
         sandbox_name = self.input_parser.sandbox_start.sandbox_name
@@ -134,10 +137,10 @@ class SandboxesCommand(BaseCommand):
             try:
                 repo = get_and_check_folder_based_repo(blueprint_name)
             except Exception:
-                self.info(
-                    "Since the blueprint repo was not found in the local working directory, trying to find blueprint "
-                    "remotely and start it from the default branch."
-                )
+                # self.info(
+                #     "Since the blueprint repo was not found in the local working directory, trying to find blueprint "
+                #     "remotely and start it from the default branch."
+                # )
                 repo = None
             try:
                 self._update_missing_inputs_with_default_values(blueprint_name, inputs, repo)
