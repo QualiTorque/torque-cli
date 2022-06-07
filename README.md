@@ -26,6 +26,10 @@ to a Torque space. You would like to be sure that your latest local changes have
 This is where this tool might be handy for you. Instead of reconnecting Torque to your development branch in the UI or going with "merge and pray" you can
 use Torque CLI to validate your current Blueprints state and even launch Sandboxes.
 
+> **_NOTE:_**  Please note that the latest stable version with spec1 support is **1.5.2**.
+Some features described in this manual (like blueprint validation or temporary branch workflow)
+are not implemented yet in the **1.6.x** version with spec2 support, but they are coming soon.
+
 ## Installing
 
 You can install Torque CLI with [pip](https://pip.pypa.io/en/stable/):
