@@ -12,7 +12,7 @@ class TestClient(unittest.TestCase):
 
     def test_default_api_path(self):
         client = TorqueClient()
-        expected = "https://qtorque.io/api/"
+        expected = "https://portal.qtorque.io/api/"
         self.assertEqual(client.base_url, expected)
 
     @mock.patch.dict(os.environ, {"TORQUE_HOSTNAME": "example.com"})
@@ -27,7 +27,7 @@ class TestClient(unittest.TestCase):
             self.client.request(endpoint=endpoint, method="UPDATE")
 
     def test_if_account_provided_client_base_url_includes_it(self):
-        self.assertEqual(self.client_with_account.base_url, "https://qtorque.io/api/")
+        self.assertEqual(self.client_with_account.base_url, "https://portal.qtorque.io/api/")
 
 
 if __name__ == "__main__":

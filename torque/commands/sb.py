@@ -1,6 +1,7 @@
 from torque.branch.branch_context import ContextBranch
 from torque.branch.branch_utils import get_and_check_folder_based_repo, logger
 from torque.commands.base import BaseCommand
+from torque.models.blueprints import BlueprintsManager
 from torque.parsers.command_input_validators import CommandInputValidator
 from torque.sandboxes import SandboxesManager
 from torque.services.sb_naming import generate_sandbox_name
@@ -28,20 +29,15 @@ class SandboxesCommand(BaseCommand):
                                         By default Torque CLI will try to take the default values for these inputs
                                         from the Blueprint definition yaml file.
 
-       -a, --artifacts <artifacts>      A comma-separated list of artifacts per application. These are relative to the
-                                        artifact repository root defined in Torque.
-                                        Example: appName1=path1, appName2=path2.
-                                        By default Torque CLI will try to take artifacts from blueprint definition yaml
-                                        file.
 
-       -b, --branch <branch>            Run the Blueprint version from a remote Git branch. If not provided,
-                                        the CLI will attempt to automatically detect the current working branch.
-                                        The CLI will automatically run any local uncommitted or untracked changes in a
-                                        temporary branch created for the validation or for the development Sandbox.
-
-       -c, --commit <commitId>          Specify a specific Commit ID. This is used in order to run a Sandbox from a
-                                        specific Blueprint historic version. If this parameter is used, the
-                                        Branch parameter must also be specified.
+       # -b, --branch <branch>            Run the Blueprint version from a remote Git branch. If not provided,
+       #                                  the CLI will attempt to automatically detect the current working branch.
+       #                                  The CLI will automatically run any local uncommitted or untracked changes in a
+       #                                  temporary branch created for the validation or for the development Sandbox.
+       #
+       # -c, --commit <commitId>          Specify a specific Commit ID. This is used in order to run a Sandbox from a
+       #                                  specific Blueprint historic version. If this parameter is used, the
+       #                                  Branch parameter must also be specified.
 
        -t, --timeout <minutes>          Set how long (default timeout is 30 minutes) to block and wait before releasing
                                         control back to shell prompt. If timeout is reached before the desired status
@@ -124,8 +120,11 @@ class SandboxesCommand(BaseCommand):
         # get commands inputs
         blueprint_name = self.input_parser.sandbox_start.blueprint_name
 
-        branch = self.input_parser.sandbox_start.branch
-        commit = self.input_parser.sandbox_start.commit
+        # branch = self.input_parser.sandbox_start.branch
+        # commit = self.input_parser.sandbox_start.commit
+        branch = None
+        commit = None
+
         CommandInputValidator.validate_commit_and_branch_specified(branch, commit)
 
         sandbox_name = self.input_parser.sandbox_start.sandbox_name
@@ -133,11 +132,21 @@ class SandboxesCommand(BaseCommand):
         wait = self.input_parser.sandbox_start.wait
         duration = self.input_parser.sandbox_start.duration
         inputs = self.input_parser.sandbox_start.inputs
-        artifacts = self.input_parser.sandbox_start.artifacts
 
         if not branch:
-            repo = get_and_check_folder_based_repo(blueprint_name)
-            self._update_missing_artifacts_and_inputs_with_default_values(artifacts, blueprint_name, inputs, repo)
+            try:
+                repo = get_and_check_folder_based_repo(blueprint_name)
+            except Exception:
+                # self.info(
+                #     "Since the blueprint repo was not found in the local working directory, trying to find blueprint "
+                #     "remotely and start it from the default branch."
+                # )
+                repo = None
+            try:
+                self._update_missing_inputs_with_default_values(blueprint_name, inputs, repo)
+            except Exception as e:
+                logger.exception(e, exc_info=False)
+                return self.die(f"Unable to start sandbox from blueprint '{blueprint_name}'")
         else:
             repo = None
 
@@ -158,7 +167,6 @@ class SandboxesCommand(BaseCommand):
                     duration,
                     context_branch.validation_branch,
                     commit,
-                    artifacts,
                     inputs,
                 )
                 if not self.global_input_parser.output_json:
@@ -186,23 +194,34 @@ class SandboxesCommand(BaseCommand):
             else:
                 return self.success(sandbox_id)
 
-    def _update_missing_artifacts_and_inputs_with_default_values(self, artifacts, blueprint_name, inputs, repo):
+    def _update_missing_inputs_with_default_values(self, blueprint_name, inputs, repo):
         # TODO(ddovbii): This obtaining default values magic must be refactored
-        logger.debug("Trying to obtain default values for artifacts and inputs from local git blueprint repo")
-        try:
-            if not repo.is_current_branch_synced():
-                logger.debug("Skipping obtaining values since local branch is not synced with remote")
-            else:
-                for art_name, art_path in repo.get_blueprint_artifacts(blueprint_name).items():
-                    if art_name not in artifacts and art_path is not None:
-                        logger.debug(f"Artifact `{art_name}` has been set with default path `{art_path}`")
-                        artifacts[art_name] = art_path
+        if repo is not None:
+            logger.debug("Trying to obtain default values for inputs from local git blueprint repo")
+            try:
+                if not repo.is_current_branch_synced():
+                    logger.debug("Skipping obtaining values since local branch is not synced with remote")
+                else:
+                    for input_name, input_value in repo.get_blueprint_default_inputs(blueprint_name).items():
+                        if input_name not in inputs and input_value is not None:
+                            logger.debug(f"Parameter `{input_name}` has been set with default value `{input_value}`")
+                            inputs[input_name] = input_value
 
-                for input_name, input_value in repo.get_blueprint_default_inputs(blueprint_name).items():
-                    if input_name not in inputs and input_value is not None:
-                        logger.debug(f"Parameter `{input_name}` has been set with default value `{input_value}`")
-                        inputs[input_name] = input_value
+            except Exception as e:
+                logger.debug(f"Unable to obtain default values. Details: {e}")
+        else:
+            bp_manager = BlueprintsManager(client=self.client)
+            try:
+                blueprint_object = bp_manager.get_detailed(blueprint_name)
+            except Exception as e:
+                raise Exception(f"Unable to get details of blueprint '{blueprint_name}'. Details: {e}")
+            bp_props = blueprint_object.get("details", None) or blueprint_object
 
-        except Exception as e:
-            logger.debug(f"Unable to obtain default values. Details: {e}")
+            for inp in bp_props.get("inputs", []):
+                name = inp["name"]
+                default = inp.get("default_value", None)
+                if name not in inputs and default is not None:
+                    logger.debug(f"Parameter `{name}` has been set with default value `{default}")
+                    inputs[name] = default
+
         return repo

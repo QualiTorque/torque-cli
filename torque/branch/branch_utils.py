@@ -71,8 +71,8 @@ def get_and_check_folder_based_repo(blueprint_name: str) -> BlueprintRepo:
         repo = BlueprintRepo(os.getcwd())
         check_repo_for_errors(repo)
         debug_output_about_repo_examination(repo, blueprint_name)
-    except Exception as e:
-        logger.error(f"Branch could not be identified/used from the working directory; reason: {e}.")
+    except Exception:
+        # logger.warning(f"Branch could not be identified/used from the working directory; reason: {e}.")
         raise
     return repo
 

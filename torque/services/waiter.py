@@ -4,7 +4,7 @@ import time
 from yaspin import yaspin
 
 from torque.branch.branch_context import ContextBranch
-from torque.branch.branch_utils import can_temp_branch_be_deleted, logger
+from torque.branch.branch_utils import logger  # can_temp_branch_be_deleted, logger
 from torque.commands.base import BaseCommand
 from torque.constants import DEFAULT_TIMEOUT, FINAL_SB_STATUSES
 from torque.sandboxes import SandboxesManager
@@ -43,11 +43,13 @@ class Waiter(object):
                     if status in FINAL_SB_STATUSES:
                         spinner.green.ok("✔")
                         break
-                    if context_branch.temp_branch_exists and can_temp_branch_be_deleted(sandbox):
-                        context_branch.delete_temp_branch()
-                        if not wait:
-                            spinner.green.ok("✔")
-                            break
+                    # TODO(ddovbii): Disable temporary branch for now
+
+                    #  if context_branch.temp_branch_exists and can_temp_branch_be_deleted(sandbox):
+                    #     context_branch.delete_temp_branch()
+                    #     if not wait:
+                    #         spinner.green.ok("✔")
+                    #         break
 
                     time.sleep(5)
                     spinner.text = f"[{int((datetime.datetime.now() - start_time).total_seconds())} sec]"

@@ -18,7 +18,7 @@ class TorqueClient(object):
     def __init__(
         self,
         torque_host_prefix: str = "https://",
-        torque_host: str = "qtorque.io",
+        torque_host: str = "portal.qtorque.io",
         space: str = None,
         token: str = None,
         account: str = None,
