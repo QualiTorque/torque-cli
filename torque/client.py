@@ -2,6 +2,7 @@ import logging
 import os
 from urllib.parse import urljoin
 
+import pkg_resources
 from requests import Response, Session
 
 from .exceptions import Unauthorized
@@ -83,6 +84,10 @@ class TorqueClient(object):
 
         if headers:
             self.session.headers.update(headers)
+
+        version = pkg_resources.get_distribution("torque-cli").version
+        if version:
+            self.session.headers.update({"User-Agent": f"Torque-CLI/{version}"})
 
         if method in ("POST", "PUT", "DELETE"):
             self.session.headers.update({"Content-Type": "application/json"})
