@@ -32,6 +32,10 @@ are not implemented yet in the **1.6.x** version with spec2 support, but they ar
 
 ## Installing
 
+Prerequisites:
+Python 3.6 and above should be installed on the machine. 
+Link for Python 3.8: https://www.python.org/ftp/python/3.8.10/python-3.8.10-amd64.exe
+
 You can install Torque CLI with [pip](https://pip.pypa.io/en/stable/):
 
 `$ python -m pip install torque-cli`
